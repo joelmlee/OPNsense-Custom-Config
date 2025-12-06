@@ -1,0 +1,9 @@
+<menu>
+    <Services>
+        <CustomConfig VisibleName="Custom Config" cssClass="fa fa-wrench" url="/ui/customconfig" order="99">
+            <vpnbypass VisibleName="VPN Bypass" url="/ui/customconfig/vpnbypass"/>
+            <monitprocess VisibleName="Monit Processes" url="/ui/customconfig/monitprocess"/>
+            <customfiles VisibleName="Custom Files" url="/ui/customconfig/customfiles"/>
+        </CustomConfig>
+    </Services>
+</menu>

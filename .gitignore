@@ -1,0 +1,16 @@
+# Build artifacts
+*.pkg
+*.txz
+work/
+pkg/
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

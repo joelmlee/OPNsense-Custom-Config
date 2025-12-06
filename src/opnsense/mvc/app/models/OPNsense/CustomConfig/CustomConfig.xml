@@ -1,0 +1,96 @@
+<model>
+    <mount>//OPNsense/CustomConfig</mount>
+    <version>1.0.0</version>
+    <description>Custom Configuration Manager</description>
+    <items>
+        <!-- DNS-based VPN Bypass Settings -->
+        <vpnbypass>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <domains type="TextField">
+                <Required>N</Required>
+                <Mask>/^[a-zA-Z0-9\.\-\*\s\n\r#]*$/</Mask>
+                <ValidationMessage>Invalid characters in domain list</ValidationMessage>
+            </domains>
+            <gateway type="TextField">
+                <Default>WAN_DHCP</Default>
+                <Required>N</Required>
+            </gateway>
+            <gateway6 type="TextField">
+                <Default>WAN_DHCP6</Default>
+                <Required>N</Required>
+            </gateway6>
+            <updateinterval type="OptionField">
+                <Default>*/15</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <m5 value="*/5">Every 5 minutes</m5>
+                    <m15 value="*/15">Every 15 minutes</m15>
+                    <m30 value="*/30">Every 30 minutes</m30>
+                    <h1 value="0">Every hour</h1>
+                </OptionValues>
+            </updateinterval>
+        </vpnbypass>
+        <!-- Monit Process Monitor Settings -->
+        <monitprocess>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <processes type="ArrayField">
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[a-zA-Z0-9_]+$/</Mask>
+                    <ValidationMessage>Name must be alphanumeric with underscores only</ValidationMessage>
+                </name>
+                <matchpattern type="TextField">
+                    <Required>Y</Required>
+                </matchpattern>
+                <startcmd type="TextField">
+                    <Required>Y</Required>
+                </startcmd>
+                <stopcmd type="TextField">
+                    <Required>N</Required>
+                </stopcmd>
+            </processes>
+            <pollinterval type="IntegerField">
+                <Default>120</Default>
+                <Required>Y</Required>
+                <MinimumValue>30</MinimumValue>
+                <MaximumValue>3600</MaximumValue>
+                <ValidationMessage>Poll interval must be between 30 and 3600 seconds</ValidationMessage>
+            </pollinterval>
+        </monitprocess>
+        <!-- Generic Custom Files -->
+        <customfiles>
+            <files type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <filepath type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^\/[a-zA-Z0-9\/_\.\-]+$/</Mask>
+                    <ValidationMessage>Must be a valid absolute file path</ValidationMessage>
+                </filepath>
+                <content type="TextField">
+                    <Required>N</Required>
+                </content>
+                <permissions type="TextField">
+                    <Default>0644</Default>
+                    <Required>N</Required>
+                    <Mask>/^[0-7]{3,4}$/</Mask>
+                    <ValidationMessage>Must be valid octal permissions (e.g., 0644)</ValidationMessage>
+                </permissions>
+                <reloadcmd type="TextField">
+                    <Required>N</Required>
+                </reloadcmd>
+            </files>
+        </customfiles>
+    </items>
+</model>

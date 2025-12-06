@@ -1,0 +1,10 @@
+Custom Configuration Manager for OPNsense
+
+This plugin provides a GUI for managing:
+- DNS-based VPN bypass (route specific domains around VPN)
+- Monit process monitors (auto-restart crashed processes)
+- Custom configuration files (arbitrary file management)
+
+All settings are stored in config.xml and backed up with normal backups.
+
+WWW: https://github.com/local/os-custom-config

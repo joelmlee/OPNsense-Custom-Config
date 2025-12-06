@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>monitprocess.enabled</id>
+        <label>Enable Monit Process Monitors</label>
+        <type>checkbox</type>
+        <help>Enable custom Monit process monitoring</help>
+    </field>
+    <field>
+        <id>monitprocess.pollinterval</id>
+        <label>Poll Interval (seconds)</label>
+        <type>text</type>
+        <help>How often Monit checks process status (30-3600)</help>
+    </field>
+</form>

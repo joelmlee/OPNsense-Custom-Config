@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>process.name</id>
+        <label>Process Name</label>
+        <type>text</type>
+        <help>Unique identifier for this monitor (alphanumeric, underscores)</help>
+    </field>
+    <field>
+        <id>process.matchpattern</id>
+        <label>Match Pattern</label>
+        <type>text</type>
+        <help>String to match in process command line (e.g., UUID or config path)</help>
+    </field>
+    <field>
+        <id>process.startcmd</id>
+        <label>Start Command</label>
+        <type>text</type>
+        <help>Command to start the process</help>
+    </field>
+    <field>
+        <id>process.stopcmd</id>
+        <label>Stop Command</label>
+        <type>text</type>
+        <help>Command to stop the process (optional, defaults to pkill)</help>
+    </field>
+</form>

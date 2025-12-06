@@ -1,0 +1,2 @@
+vpn_bypass_domains.conf:/usr/local/etc/vpn_bypass_domains.conf
+monit_openvpn.conf:/usr/local/etc/monit.opnsense.d/customconfig.conf

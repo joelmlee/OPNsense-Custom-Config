@@ -1,0 +1,39 @@
+<form>
+    <field>
+        <id>file.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this custom file</help>
+    </field>
+    <field>
+        <id>file.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Descriptive name for this file</help>
+    </field>
+    <field>
+        <id>file.filepath</id>
+        <label>File Path</label>
+        <type>text</type>
+        <help>Absolute path where file will be written (e.g., /usr/local/etc/myconfig.conf)</help>
+    </field>
+    <field>
+        <id>file.content</id>
+        <label>Content</label>
+        <type>textbox</type>
+        <height>20</height>
+        <help>File contents</help>
+    </field>
+    <field>
+        <id>file.permissions</id>
+        <label>Permissions</label>
+        <type>text</type>
+        <help>File permissions in octal (e.g., 0644)</help>
+    </field>
+    <field>
+        <id>file.reloadcmd</id>
+        <label>Reload Command</label>
+        <type>text</type>
+        <help>Optional command to run after file is written (e.g., service restart)</help>
+    </field>
+</form>

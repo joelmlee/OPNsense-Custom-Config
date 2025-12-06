@@ -1,0 +1,23 @@
+<form>
+    <field>
+        <id>vpnbypass.enabled</id>
+        <label>Enable VPN Bypass</label>
+        <type>checkbox</type>
+        <help>Enable DNS-based VPN bypass for specified domains</help>
+    </field>
+    <field>
+        <id>vpnbypass.domains</id>
+        <label>Bypass Domains</label>
+        <type>textbox</type>
+        <height>15</height>
+        <help><![CDATA[Enter domains to bypass VPN (one per line).<br/>
+Supports wildcards: <b>*.example.com</b> matches all subdomains.<br/>
+Lines starting with # are comments.]]></help>
+    </field>
+    <field>
+        <id>vpnbypass.updateinterval</id>
+        <label>Update Interval</label>
+        <type>dropdown</type>
+        <help>How often to refresh DNS resolutions</help>
+    </field>
+</form>
