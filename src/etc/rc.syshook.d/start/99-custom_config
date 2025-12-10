@@ -1,0 +1,19 @@
+#!/bin/sh
+# Apply custom configurations at boot
+
+SCRIPT_DIR="/usr/local/opnsense/scripts/OPNsense/CustomConfig"
+
+# Generate Monit drop-in configs and start monit
+if [ -x "$SCRIPT_DIR/monit.sh" ]; then
+    "$SCRIPT_DIR/monit.sh" configure
+fi
+
+# Configure VPN bypass
+if [ -x "$SCRIPT_DIR/vpnbypass.sh" ]; then
+    "$SCRIPT_DIR/vpnbypass.sh" configure &
+fi
+
+# Start the DNS sniffer
+if [ -x "$SCRIPT_DIR/vpnbypass_sniffer.py" ]; then
+    "$SCRIPT_DIR/vpnbypass_sniffer.py" start &
+fi

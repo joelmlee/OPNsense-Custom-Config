@@ -21,7 +21,14 @@ cp -r ${PLUGIN_DIR}/opnsense/service/templates/OPNsense/CustomConfig /usr/local/
 # Copy scripts
 mkdir -p /usr/local/opnsense/scripts/OPNsense/CustomConfig
 cp ${PLUGIN_DIR}/opnsense/scripts/OPNsense/CustomConfig/*.sh /usr/local/opnsense/scripts/OPNsense/CustomConfig/
+cp ${PLUGIN_DIR}/opnsense/scripts/OPNsense/CustomConfig/*.py /usr/local/opnsense/scripts/OPNsense/CustomConfig/
 chmod +x /usr/local/opnsense/scripts/OPNsense/CustomConfig/*.sh
+chmod +x /usr/local/opnsense/scripts/OPNsense/CustomConfig/*.py
+
+# Copy startup hook
+mkdir -p /usr/local/etc/rc.syshook.d/start
+cp ${PLUGIN_DIR}/etc/rc.syshook.d/start/99-custom_config /usr/local/etc/rc.syshook.d/start/
+chmod +x /usr/local/etc/rc.syshook.d/start/99-custom_config
 
 # Copy plugin integration
 cp ${PLUGIN_DIR}/etc/inc/plugins.inc.d/customconfig.inc /usr/local/etc/inc/plugins.inc.d/
@@ -35,6 +42,9 @@ service configd restart
 # Flush cache
 /usr/local/etc/rc.d/configd restart
 
+# Run initial configuration
+/usr/local/opnsense/scripts/OPNsense/CustomConfig/monit.sh configure
+
 echo "Plugin installed. Please refresh the GUI and navigate to Services > Custom Config"
 echo ""
-echo "You may need to run: configctl template reload OPNsense/CustomConfig"
+echo "Monit drop-in configs have been generated. Run 'monit summary' to verify."

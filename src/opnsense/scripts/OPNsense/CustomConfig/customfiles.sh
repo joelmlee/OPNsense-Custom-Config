@@ -81,3 +81,20 @@ except Exception as e:
     print(f"Error: {e}")
     exit(1)
 PYTHON_SCRIPT
+
+# Fix monitrc after OPNsense template regeneration
+fix_monitrc() {
+    if ! grep -q "set daemon" /usr/local/etc/monitrc 2>/dev/null; then
+        cat > /usr/local/etc/monitrc << MONITRC
+# Monit configuration
+set daemon 120
+set httpd unixsocket /var/run/monit.sock allow localhost
+
+include /usr/local/etc/monit.opnsense.d/*.conf
+MONITRC
+        chmod 600 /usr/local/etc/monitrc
+        /usr/local/bin/monit -c /usr/local/etc/monitrc 2>/dev/null || true
+    fi
+}
+
+fix_monitrc
