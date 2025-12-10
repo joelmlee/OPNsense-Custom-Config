@@ -47,6 +47,27 @@ def log(msg, level="INFO"):
         pass
 
 
+def get_lan_interface():
+    """Detect the LAN interface from OPNsense config"""
+    import xml.etree.ElementTree as ET
+
+    try:
+        tree = ET.parse("/conf/config.xml")
+        root = tree.getroot()
+
+        # Find LAN interface name (e.g., "igb1")
+        lan_if = root.find(".//interfaces/lan/if")
+        if lan_if is not None and lan_if.text:
+            log(f"Detected LAN interface: {lan_if.text}")
+            return lan_if.text
+    except Exception as e:
+        log(f"Error detecting LAN interface: {e}", "ERROR")
+
+    # Fallback to igb1
+    log("Falling back to igb1 for LAN interface", "WARN")
+    return "igb1"
+
+
 def load_wildcard_patterns():
     """Load wildcard domain patterns from config file"""
     global wildcard_patterns
@@ -227,15 +248,17 @@ def run_sniffer():
         log("No wildcard patterns configured, nothing to sniff for", "WARN")
         # Still run but check periodically for config changes
 
-    # Start tcpdump on loopback interface, capturing DNS responses
+    # Detect LAN interface dynamically
+    lan_interface = get_lan_interface()
+
+    # Start tcpdump on LAN interface, capturing DNS responses
     # -l: line buffered, -n: no DNS resolution, -v: verbose (shows DNS content)
-    # We capture on lo0 (loopback) where Unbound listens
     cmd = [
         '/usr/sbin/tcpdump',
         '-l',           # Line buffered output
         '-n',           # Don't resolve IPs to names
         '-v',           # Verbose - shows DNS response content
-        '-i', 'lo0',    # Loopback interface
+        '-i', lan_interface,
         '-s', '512',    # Capture enough for DNS packets
         'udp port 53 and src port 53'  # Only DNS responses (from port 53)
     ]
