@@ -8,7 +8,7 @@
     <field>
         <id>vpnbypass.domains</id>
         <label>Bypass Domains</label>
-        <type>text</type>
+        <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
         <help><![CDATA[Enter domains to bypass VPN. Press Tab or Enter after each domain.<br/>
