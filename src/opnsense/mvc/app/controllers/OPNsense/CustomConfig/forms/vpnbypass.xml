@@ -8,11 +8,11 @@
     <field>
         <id>vpnbypass.domains</id>
         <label>Bypass Domains</label>
-        <type>textbox</type>
-        <height>15</height>
-        <help><![CDATA[Enter domains to bypass VPN (one per line).<br/>
-Supports wildcards: <b>*.example.com</b> matches all subdomains.<br/>
-Lines starting with # are comments.]]></help>
+        <type>text</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Enter domains to bypass VPN. Press Tab or Enter after each domain.<br/>
+Use wildcards like <b>*.example.com</b> to match all subdomains.]]></help>
     </field>
     <field>
         <id>vpnbypass.updateinterval</id>

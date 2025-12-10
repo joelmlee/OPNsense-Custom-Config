@@ -9,7 +9,7 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
-            <domains type="TextField">
+            <domains type="CSVListField">
                 <Required>N</Required>
                 <Mask>/^[a-zA-Z0-9\.\-\*\s\n\r#]*$/</Mask>
                 <ValidationMessage>Invalid characters in domain list</ValidationMessage>
