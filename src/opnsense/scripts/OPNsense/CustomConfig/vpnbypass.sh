@@ -15,9 +15,9 @@ COMMON_SUBDOMAINS="www"
 # Check if a domain matches any configured wildcard
 domain_matches_wildcards() {
     check_domain="$1"
-    
+
     [ ! -f "$DOMAIN_FILE" ] && return 1
-    
+
     while IFS= read -r line; do
         case "$line" in
             "#"*|"") continue ;;
@@ -32,7 +32,7 @@ domain_matches_wildcards() {
                 ;;
         esac
     done < "$DOMAIN_FILE"
-    
+
     return 1
 }
 
@@ -93,8 +93,8 @@ configure() {
 
 resolve_domain() {
     domain="$1"
-    drill "$domain" A 2>/dev/null | grep -E IN[[:space:]]+A[[:space:]] | awk {print } | grep -E ^[0-9]+.[0-9]+.[0-9]+.[0-9]+
-    drill "$domain" AAAA 2>/dev/null | grep -E IN[[:space:]]+AAAA[[:space:]] | awk {print } | grep -E ^[0-9a-fA-F:]+
+    drill "$domain" A 2>/dev/null | grep -E 'IN[[:space:]]+A[[:space:]]' | awk '{print $NF}' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
+    drill "$domain" AAAA 2>/dev/null | grep -E 'IN[[:space:]]+AAAA[[:space:]]' | awk '{print $NF}' | grep -E '^[0-9a-fA-F:]+$'
 }
 
 update() {
@@ -110,7 +110,7 @@ update() {
             "#"*|"") continue ;;
         esac
 
-        domain=$(echo "$line" | tr -d [:space:])
+        domain=$(echo "$line" | tr -d '[:space:]')
         [ -z "$domain" ] && continue
 
         case "$domain" in
@@ -136,13 +136,13 @@ update() {
     fi
 
     sort -u "$TEMP_FILE" -o "$TEMP_FILE"
-    ip_count=$(wc -l < "$TEMP_FILE" | tr -d  )
+    ip_count=$(wc -l < "$TEMP_FILE" | tr -d ' ')
 
     if [ -s "$TEMP_FILE" ]; then
         /sbin/pfctl -t "$TABLE_NAME" -T flush 2>/dev/null
         /sbin/pfctl -t "$TABLE_NAME" -T add -f "$TEMP_FILE" 2>/dev/null
         logger -t customconfig "VPN Bypass: Updated $TABLE_NAME with $ip_count IPs"
-        echo "Updated PF table  with $ip_count IPs"
+        echo "Updated PF table '$TABLE_NAME' with $ip_count IPs"
     else
         echo "No IPs resolved from domains"
     fi
@@ -153,13 +153,13 @@ update() {
 status() {
     echo "=== VPN Bypass Status ==="
     if /sbin/pfctl -t "$TABLE_NAME" -T show >/dev/null 2>&1; then
-        count=$(/sbin/pfctl -t "$TABLE_NAME" -T show | wc -l | tr -d  )
-        echo "PF Table : $count IPs"
+        count=$(/sbin/pfctl -t "$TABLE_NAME" -T show | wc -l | tr -d ' ')
+        echo "PF Table '$TABLE_NAME': $count IPs"
         echo ""
         echo "Current IPs:"
         /sbin/pfctl -t "$TABLE_NAME" -T show
     else
-        echo "PF Table  does not exist"
+        echo "PF Table '$TABLE_NAME' does not exist"
     fi
 
     echo ""
@@ -173,7 +173,7 @@ status() {
 
 discovered() {
     echo "{"
-    echo  domains: [
+    echo '  "domains": ['
     if [ -f "$DISCOVERED_DOMAINS_FILE" ] && [ -s "$DISCOVERED_DOMAINS_FILE" ]; then
         first=1
         while IFS= read -r domain; do
@@ -186,10 +186,10 @@ discovered() {
             fi
         done < "$DISCOVERED_DOMAINS_FILE"
     fi
-    echo  ],
+    echo '  ],'
 
     if [ -f "$DISCOVERED_DOMAINS_FILE" ]; then
-        count=$(wc -l < "$DISCOVERED_DOMAINS_FILE" | tr -d  )
+        count=$(wc -l < "$DISCOVERED_DOMAINS_FILE" | tr -d ' ')
     else
         count=0
     fi
@@ -225,7 +225,7 @@ add_domain() {
         echo "$ips" | while read -r ip; do
             /sbin/pfctl -t "$TABLE_NAME" -T add "$ip" 2>/dev/null
         done
-        ip_count=$(echo "$ips" | wc -l | tr -d  )
+        ip_count=$(echo "$ips" | wc -l | tr -d ' ')
         echo "Resolved $ip_count IPs for $domain"
     else
         echo "No IPs resolved for $domain"
