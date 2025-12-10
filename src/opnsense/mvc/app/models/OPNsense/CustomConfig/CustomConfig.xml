@@ -11,8 +11,9 @@
             </enabled>
             <domains type="CSVListField">
                 <Required>N</Required>
-                <Mask>/^[a-zA-Z0-9\.\-\*\s\n\r#]*$/</Mask>
-                <ValidationMessage>Invalid characters in domain list</ValidationMessage>
+                <Mask>/^[\*]?[a-zA-Z0-9\.\-]+$/</Mask>
+                <MaskPerItem>Y</MaskPerItem>
+                <ValidationMessage>Invalid domain format. Use *.example.com or example.com</ValidationMessage>
             </domains>
             <gateway type="TextField">
                 <Default>WAN_DHCP</Default>
