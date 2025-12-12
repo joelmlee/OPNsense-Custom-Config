@@ -45,6 +45,12 @@ service configd restart
 # Run initial configuration
 /usr/local/opnsense/scripts/OPNsense/CustomConfig/monit.sh configure
 
+# Add IDS alert cron job if not present
+if ! crontab -l 2>/dev/null | grep -q ids_alert.py; then
+    (crontab -l 2>/dev/null; echo '*/5 * * * * /usr/local/opnsense/scripts/OPNsense/CustomConfig/ids_alert.py >/dev/null 2>&1') | crontab -
+    echo "Added IDS alert cron job (runs every 5 minutes)"
+fi
+
 echo "Plugin installed. Please refresh the GUI and navigate to Services > Custom Config"
 echo ""
 echo "Monit drop-in configs have been generated. Run 'monit summary' to verify."
